@@ -17,11 +17,11 @@ from collections import defaultdict
 
 # settable parameters
 IPMI_IP = "192.168.10.22"
-IPMI_ADDR = [ 0x5A, 0x5C, 0x8c] # two fan trays and one serenity+openipmc
-IPMI_STR  = [ "FTL.", "FTU.", "Ser10."]
+IPMI_ADDR = [ 0x5A, 0x5C, 0x8C] # two fan trays and one serenity+openipmc
+IPMI_STR  = [ "FTL.", "FTU.", "Slot10."]
 GRAPHITE_IP = '127.0.0.1'
 GRAPHITE_PORT = 2004
-carbon_directory = "atca.kit."   # TODO: WHAT IS THIS ? 
+carbon_directory = "atca.kit."  
 
 #%%
 def get_all_sensors(ipmi_ip, ipmi_addr):
@@ -49,6 +49,8 @@ sleeptime=60.0
 
 tempstr = re.compile("[Tt]em")
 fanstr= re.compile("Tach")
+OpenIPMC = re.compile("PIM400")
+
 db = ([])
 ii = 0
 
@@ -64,7 +66,7 @@ while True:
         for s in sensor_raw:
             #print(s)
             s[0] = s[0].rstrip('\.')
-            if tempstr.search(s[0]) or fanstr.search(s[0]) :
+            if tempstr.search(s[0]) or fanstr.search(s[0]) or OpenIPMC.search(s[0]) :
                 sensors[IPMI_STR[i]+s[0]] = s[1]
     time_epoch= int(time.time())
 

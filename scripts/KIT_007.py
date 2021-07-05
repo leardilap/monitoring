@@ -32,8 +32,6 @@ timestamp = time.time()
 dblist = []
 if PIM400KZ_current!="na": dblist.append(["kit_atca_007.temperatues.PIM400KZ_current", ( timestamp, PIM400KZ_current) ])
 
-
-
 payload = pickle.dumps(dblist, protocol=2)
 header = struct.pack("!L", len(payload))
 message = header + payload

@@ -17,8 +17,8 @@ from collections import defaultdict
 
 # settable parameters
 IPMI_IP = "192.168.10.22"
-IPMI_ADDR = [ 0x5A, 0x5C, 0x8C] # two fan trays and one serenity+openipmc
-IPMI_STR  = [ "FTL.", "FTU.", "Slot10."]
+IPMI_ADDR = [ 0x5A, 0x5C, 0x9A, 0x96, 0x92, 0x8E, 0x8A, 0x86, 0x82, 0x84, 0x88, 0x8C, 0x90, 0x94, 0x98, 0x9C] # two fan trays and one serenity+openipmc
+IPMI_STR  = [ "FTL.", "FTU.", "Slot01.", "Slot02.", "Slot03.", "Slot04.", "Slot05.", "Slot06.", "Slot07.", "Slot08.", "Slot09.", "Slot10.", "Slot11.", "Slot12.", "Slot13.", "Slot14."]
 GRAPHITE_IP = '127.0.0.1'
 GRAPHITE_PORT = 2004
 carbon_directory = "atca.kit."  
@@ -66,14 +66,18 @@ while True:
         for s in sensor_raw:
             #print(s)
             s[0] = s[0].rstrip('\.')
-            if tempstr.search(s[0]) or fanstr.search(s[0]) or OpenIPMC.search(s[0]) :
+            #if tempstr.search(s[0]) or fanstr.search(s[0]) or OpenIPMC.search(s[0]) :
+            if s[1] != 'na':
                 sensors[IPMI_STR[i]+s[0]] = s[1]
     time_epoch= int(time.time())
 
     for key in sensors.keys():
        try:
            header = (carbon_directory + key).replace(" ", "_")
-           val = float(sensors[key])
+           if sensors[key][0] == '0' and sensors[key][1] == 'x':
+               val = float.fromhex(sensors[key])
+           else:
+               val = float(sensors[key])
            db.append((header,(time_epoch, val)))
        except ValueError:
            print("can't make this a float:", sensors[key])

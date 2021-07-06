@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov  4 13:38:11 2019
-
-@author: wittich@cornell.edu 
+adapted from apollo_scrape.py for KIT crate by Luis Ardila <luis.ardila@kit.edu>
 """
 
 
@@ -17,8 +15,43 @@ from collections import defaultdict
 
 # settable parameters
 IPMI_IP = "192.168.10.22"
-IPMI_ADDR = [ 0x5A, 0x5C, 0x9A, 0x96, 0x92, 0x8E, 0x8A, 0x86, 0x82, 0x84, 0x88, 0x8C, 0x90, 0x94, 0x98, 0x9C] # two fan trays and one serenity+openipmc
-IPMI_STR  = [ "FTL.", "FTU.", "Slot01.", "Slot02.", "Slot03.", "Slot04.", "Slot05.", "Slot06.", "Slot07.", "Slot08.", "Slot09.", "Slot10.", "Slot11.", "Slot12.", "Slot13.", "Slot14."]
+IPMI_ADDR = [ 
+    0x5A, # Fan Tray Lower
+    0x5C, # Fan Tray Upper
+    0x9A, # slot 01 (9a): Serenity-Z1.0 + OpenIPMC_v1.0(12) + STLINK_v3.0
+    #0x96, # slot 02 (96):
+    #0x92, # slot 03 (92):
+    0x8E, # slot 04 (8e): Pulsar iib (no FPGA) + OpenIPMC_v1.0(14)
+    #0x8A, # slot 05 (8a): Pulsar iib (with FPGA) + OpenIPMC_v1.0(07)
+    0x86, # slot 06 (86): Pulsar iib (no FPGA) + OpenIPMC_v1.0(05)
+    0x82, # slot 07 (82): Vadatech ATC807 ETH SW
+    0x84, # slot 08 (84): Pulsar iib (no FPGA) + OpenIPMC_v1.0(15)
+    0x88, # slot 09 (88): Pulsar iib (no FPGA) + OpenIPMC_v1.0(08)
+    0x8C, # slot 10 (8c): Serenity-Z1.1 + OpenIPMC_v1.0(01) + miniSTLINK_v3.0
+    #0x90, # slot 11 (90):
+    #0x94, # slot 12 (94):
+    0x98, # slot 13 (98): Pulsar iib (no FPGA) + OpenIPMC_v1.0(06) 
+    0x9C  # slot 14 (9c): Pulsar iib (no FPGA) + OpenIPMC_v1.0(13)
+    ] 
+    
+IPMI_STR  = [ 
+    "FTL.", 
+    "FTU.", 
+    "Slot01.", 
+    #"Slot02.", 
+    #"Slot03.", 
+    "Slot04.", 
+    #"Slot05.", 
+    "Slot06.", 
+    "Slot07.", 
+    "Slot08.", 
+    "Slot09.", 
+    "Slot10.", 
+    #"Slot11.", 
+    #"Slot12.", 
+    "Slot13.", 
+    "Slot14."
+    ]
 GRAPHITE_IP = '127.0.0.1'
 GRAPHITE_PORT = 2004
 carbon_directory = "atca.kit."  

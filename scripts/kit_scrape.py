@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
 """
 adapted from apollo_scrape.py for KIT crate by Luis Ardila <luis.ardila@kit.edu>
 """
@@ -52,6 +52,7 @@ IPMI_STR  = [
     "Slot13.", 
     "Slot14."
     ]
+    
 GRAPHITE_IP = '127.0.0.1'
 GRAPHITE_PORT = 2004
 carbon_directory = "atca.kit."  
@@ -77,7 +78,7 @@ def map_fcn(val):
    else:
         return str(val)
 #%%
-sleeptime=60.0
+#sleeptime=60.0
 
 
 tempstr = re.compile("[Tt]em")
@@ -92,40 +93,43 @@ sock = socket.socket()
 sock.connect((GRAPHITE_IP, GRAPHITE_PORT))
 starttime = time.time()
 #%%
-while True:
-    sensors = defaultdict(list)
-    for i in range(len(IPMI_ADDR)):
-        sensor_raw = get_all_sensors(IPMI_IP, IPMI_ADDR[i])
-        for s in sensor_raw:
-            #print(s)
-            s[0] = s[0].rstrip('\.')
-            #if tempstr.search(s[0]) or fanstr.search(s[0]) or OpenIPMC.search(s[0]) :
-            if s[1] != 'na':
-                sensors[IPMI_STR[i]+s[0]] = s[1]
-    time_epoch= int(time.time())
+#while True:
+sensors = defaultdict(list)
 
-    for key in sensors.keys():
-       try:
-           header = (carbon_directory + key).replace(" ", "_")
-           if sensors[key][0] == '0' and sensors[key][1] == 'x':
-               val = float.fromhex(sensors[key])
-           else:
-               val = float(sensors[key])
-           db.append((header,(time_epoch, val)))
-       except ValueError:
-           print("can't make this a float:", sensors[key])
+for i in range(len(IPMI_ADDR)):
+    sensor_raw = get_all_sensors(IPMI_IP, IPMI_ADDR[i])
+    for s in sensor_raw:
+        #print(s)
+        s[0] = s[0].rstrip('\.')
+        #if tempstr.search(s[0]) or fanstr.search(s[0]) or OpenIPMC.search(s[0]) :
+        if s[1] != 'na':
+            sensors[IPMI_STR[i]+s[0]] = s[1]
+            
+time_epoch= int(time.time())
 
-    if len(db) > 50 :
-        payload = pickle.dumps(db, protocol=2)
-        header = struct.pack("!L", len(payload))
-        print(db)
-        message = header + payload
-        sock.sendall(message)
-        ii = ii+ 1
-        print('sent packet ', ii)
-        db = ([])
+
+for key in sensors.keys():
+   try:
+       header = (carbon_directory + key).replace(" ", "_")
+       if sensors[key][0] == '0' and sensors[key][1] == 'x':
+           val = float.fromhex(sensors[key])
+       else:
+           val = float(sensors[key])
+       db.append((header,(time_epoch, val)))
+   except ValueError:
+       print("can't make this a float:", sensors[key])
+
+if len(db) > 10 :
+    payload = pickle.dumps(db, protocol=2)
+    header = struct.pack("!L", len(payload))
+    print(db)
+    message = header + payload
+    sock.sendall(message)
+    ii = ii+ 1
+    print('sent packet ', ii)
+    db = ([])
     # sleep, taking into account how long the times took. 
-    time.sleep(sleeptime- ((time.time()-starttime)%sleeptime))
+    #time.sleep(sleeptime- ((time.time()-starttime)%sleeptime))
 
 sock.detach()
 sock.close()

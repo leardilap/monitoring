@@ -31,3 +31,13 @@ http://localhost:3005/login/
 
 - graphite
 http://localhost:8080/
+
+# set up cron job to run the python script to log the information into the data base
+```
+crontab -e
+```
+
+
+```
+* * * * * /home/lardilap/Projects/Shelf_Monitoring/monitoring/scripts/kit_scrape.py >> /home/lardilap/Projects/Shelf_Monitoring/monitoring/scripts/log/`date +\%Y-\%m-\%d`-cron.log 2>&1
+```

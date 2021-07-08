@@ -39,5 +39,5 @@ crontab -e
 
 
 ```
-*/2 * * * * /home/lardilap/Projects/Shelf_Monitoring/monitoring/scripts/kit_scrape.py >> /home/lardilap/Projects/Shelf_Monitoring/monitoring/scripts/log/`date +\%Y-\%m-\%d`-cron.log 2>&1
+*/2 * * * * PATH/TO/monitoring/scripts/kit_scrape.py >> PATH/TO//monitoring/scripts/log/`date +\%Y-\%m-\%d`-cron.log 2>&1
 ```

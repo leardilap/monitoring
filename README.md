@@ -1,6 +1,6 @@
 # monitoring
 
-# fetch the image and build it
+### 1) fetch the image and build it
 
 https://github.com/XN137/docker-graphite-grafana
 
@@ -10,7 +10,7 @@ cd docker-graphite-grafana
 docker build -t 2021-07-05-graphite-grafana .
 ```
 
-# run the image mounting volumens for persistent data storage in /var/lib/gmonitor
+### 2) run the image mounting volumens for persistent data storage in /var/lib/gmonitor
 
 ```
 docker run -v /var/lib/gmonitor/graphite/whisper:/var/lib/graphite/storage/whisper \
@@ -24,7 +24,7 @@ docker run -v /var/lib/gmonitor/graphite/whisper:/var/lib/graphite/storage/whisp
 
 ```
 
-# navigate to webserver admin:admin
+### 3) navigate to webserver admin:admin
 
 - grafana
 http://localhost:3005/login/
@@ -32,7 +32,7 @@ http://localhost:3005/login/
 - graphite
 http://localhost:8080/
 
-# set up cron job to run the python script to log the information into the data base
+### 4) set up cron job to run the python script to log the information into the data base
 ```
 crontab -e
 ```

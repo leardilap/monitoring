@@ -99,8 +99,10 @@ sensors = defaultdict(list)
 for i in range(len(IPMI_ADDR)):
     sensor_raw = get_all_sensors(IPMI_IP, IPMI_ADDR[i])
     for s in sensor_raw:
-        #print(s)
         s[0] = s[0].rstrip('\.')
+        s[0] = s[0].replace(".","_")
+        s[0] = s[0].replace("+","")
+        #print(s[0])
         #if tempstr.search(s[0]) or fanstr.search(s[0]) or OpenIPMC.search(s[0]) :
         if s[1] != 'na':
             sensors[IPMI_STR[i]+s[0]] = s[1]
@@ -110,6 +112,7 @@ time_epoch= int(time.time())
 
 for key in sensors.keys():
    try:
+       #print(key)
        header = (carbon_directory + key).replace(" ", "_")
        if sensors[key][0] == '0' and sensors[key][1] == 'x':
            val = float.fromhex(sensors[key])

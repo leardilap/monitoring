@@ -39,5 +39,8 @@ crontab -e
 
 
 ```
-*/2 * * * * PATH/TO/monitoring/scripts/kit_scrape.py >> PATH/TO//monitoring/scripts/log/`date +\%Y-\%m-\%d`-cron.log 2>&1
+*/2 * * * * PATH/TO/monitoring/scripts/kit_scrape.py >> PATH/TO/monitoring/scripts/log/`date +\%Y-\%m-\%d`-cron.log 2>&1
+*/30 * * * * ipmitool -H 192.168.10.22 -P "" sel list > PATH/TO/monitoring/scripts/log/`date +\%Y-\%m-\%d_\%H`-ipmitool_sel.log 2>&1
+*/30 * * * * ssh root@192.168.10.22 clia sel > PATH/TO/monitoring/scripts/log/`date +\%Y-\%m-\%d_\%H`-ssh_sel.log 2>&1
+
 ```

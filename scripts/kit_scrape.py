@@ -24,7 +24,7 @@ IPMI_ADDR = [
     0x8E, # slot 04 (8e): Pulsar iib (no FPGA) + OpenIPMC_v1.0(14)
     #0x8A, # slot 05 (8a): Pulsar iib (with FPGA) + OpenIPMC_v1.0(07)
     0x86, # slot 06 (86): Pulsar iib (no FPGA) + OpenIPMC_v1.0(05)
-    0x82, # slot 07 (82): Vadatech ATC807 ETH SW
+    #0x82, # slot 07 (82): Vadatech ATC807 ETH SW
     0x84, # slot 08 (84): Pulsar iib (no FPGA) + OpenIPMC_v1.0(15)
     0x88, # slot 09 (88): Pulsar iib (no FPGA) + OpenIPMC_v1.0(08)
     0x8C, # slot 10 (8c): Serenity-Z1.1 + OpenIPMC_v1.0(01) + miniSTLINK_v3.0

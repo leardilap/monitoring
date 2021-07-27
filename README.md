@@ -13,7 +13,8 @@ docker build -t 2021-07-05-graphite-grafana .
 ### 2) run the image mounting volumens for persistent data storage in /var/lib/gmonitor
 
 ```
-docker run -v /var/lib/gmonitor/graphite/whisper:/var/lib/graphite/storage/whisper \
+docker run --restart unless-stopped \
+           -v /var/lib/gmonitor/graphite/whisper:/var/lib/graphite/storage/whisper \
            -v /var/lib/gmonitor/graphite/conf:/var/lib/graphite/conf \
            -v /var/lib/gmonitor/grafana/data:/usr/share/grafana/data \
            -p 2003:2003 \
